@@ -5,6 +5,8 @@ namespace kol2APBD.Contexts;
 
 public class DatabaseContext : DbContext
 {
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Prescription> Prescriptions { get; set; }
@@ -109,5 +111,12 @@ public class DatabaseContext : DbContext
                 PrescriptionMedicamentDetails = "Byle nie zabić"
             }
         });
+        //user
+        modelBuilder.Entity<User>().HasData(
+            new User { UserId = 1, Login = "admin", PasswordHash = "adminhash" }
+        );
+        //token
+        modelBuilder.Entity<RefreshToken>().HasKey(rt => rt.Id);
+        modelBuilder.Entity<RefreshToken>().Property(rt => rt.Token).IsRequired().HasMaxLength(256);
     }
 }
